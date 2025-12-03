@@ -33,4 +33,11 @@ func main() {
 	}
 
 	fmt.Println("SELECT 1 result:", result)
+
+	// 👉 Call the user demo here
+	if err := runUserDemo(db); err != nil {
+		log.Fatalf("user demo failed: %v", err)
+	}
+
+	log.Println("finished main()")
 }
