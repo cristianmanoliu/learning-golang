@@ -25,6 +25,8 @@ func main() {
 		Topic:    topic,
 		Balancer: &kafka.LeastBytes{},
 	})
+	// defer means "execute this when the surrounding function returns"
+	// surrounding function here is main()
 	defer func() {
 		if err := writer.Close(); err != nil {
 			log.Printf("close writer: %v\n", err)
@@ -35,6 +37,8 @@ func main() {
 	log.Printf("publishing message to topic=%s: %s\n", topic, msgValue)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	// defer means "execute this when the surrounding function returns"
+	// surrounding function here is main()
 	defer cancel()
 
 	if err := writer.WriteMessages(ctx, kafka.Message{
@@ -62,6 +66,7 @@ func ensureTopic(brokerAddr, topic string) error {
 		return fmt.Errorf("get controller: %w", err)
 	}
 
+	// controller address is used to create topics
 	controllerAddr := fmt.Sprintf("%s:%d", controller.Host, controller.Port)
 
 	// Connect to the controller
@@ -85,5 +90,6 @@ func ensureTopic(brokerAddr, topic string) error {
 		log.Printf("CreateTopics (maybe already exists): %v\n", err)
 	}
 
+	// return nil means no error
 	return nil
 }
