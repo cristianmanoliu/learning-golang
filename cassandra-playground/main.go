@@ -78,6 +78,7 @@ func mustCreateSession(keyspace string, port int) *gocql.Session {
 	cluster.Timeout = 5 * time.Second
 
 	// Session creation with retries
+	// Pointer for session because gocql.CreateSession returns a pointer.
 	var session *gocql.Session
 	var err error
 
@@ -122,12 +123,14 @@ func listUsers(session *gocql.Session) ([]User, error) {
 	const cql = `SELECT id, name FROM users;`
 
 	iter := session.Query(cql).Iter()
+	// Defer closing the iterator to free resources
 	defer iter.Close()
 
 	var users []User
 	var id gocql.UUID
 	var name string
 
+	// iter.Scan populates the variables with the next row's data
 	for iter.Scan(&id, &name) {
 		users = append(users, User{ID: id, Name: name})
 	}
@@ -135,5 +138,7 @@ func listUsers(session *gocql.Session) ([]User, error) {
 		return nil, err
 	}
 
+	// return users slice and nil error
+	// nil means no error occurred
 	return users, nil
 }
