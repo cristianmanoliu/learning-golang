@@ -41,6 +41,7 @@ func main() {
 		Topic:    targetTopic,
 		Balancer: &kafka.LeastBytes{},
 	})
+	// defer means it will be closed at the end of main()
 	defer func() {
 		if err := writer.Close(); err != nil {
 			log.Printf("close writer: %v\n", err)
@@ -48,6 +49,7 @@ func main() {
 	}()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	// cancel is deferred to ensure resources are cleaned up, and it will be called at the end of main()
 	defer cancel()
 
 	log.Printf("waiting to fetch one message from topic=%s\n", sourceTopic)

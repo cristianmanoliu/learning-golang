@@ -35,3 +35,13 @@ Go (or Golang) is an open-source programming language created at Google, designe
 - **`net/http`** – HTTP server and client; widely used in web services.
 - **`net`** – TCP/UDP networking primitives.
 - **`crypto/*`** – Hashing, encryption, TLS, and other crypto tools.
+
+## Pointers Receivers vs Value Receivers
+
+- Has mutex / shared state / needs mutation / is large? → use \*T.
+
+- Small, immutable-ish value type (like math types)? → use T.
+
+If you’re ever in doubt and the type is used as a service / store / client, default to pointer receivers.
+
+All arguments passed to methods are copied, so using a pointer receiver means only the pointer is copied, not the entire value. This is more efficient for large structs.
