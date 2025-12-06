@@ -7,6 +7,8 @@ import (
 	"log"
 	"time"
 
+	// Redis Go client v9
+	// Redis is an in-memory data structure store, used as a database, cache, and message broker.
 	"github.com/redis/go-redis/v9"
 )
 
@@ -17,6 +19,9 @@ type User struct {
 }
 
 func main() {
+	// Flags to include date, time, and file info in logs.
+	// Lshortfile adds final file name element and line number.
+	// LstdFlags is the standard date and time format.
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	ctx := context.Background()
@@ -120,6 +125,7 @@ func listUsers(ctx context.Context, rdb *redis.Client) ([]User, error) {
 			}
 
 			var u User
+			// Unmarshal JSON data into User struct.
 			if err := json.Unmarshal(data, &u); err != nil {
 				return nil, fmt.Errorf("unmarshal %s: %w", key, err)
 			}

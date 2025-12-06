@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/cristianmanoliu/learning-golang/grpc-playground/proto_gen/proto;userpb";
+
+message User {
+  string id = 1;
+  string name = 2;
+}
+
+message CreateUserRequest {
+  string name = 1;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message ListUsersRequest {}
+
+message ListUsersResponse {
+  repeated User users = 1;
+}
+
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+  rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
+}
